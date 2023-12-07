@@ -40,7 +40,8 @@ fn main() -> Result<()> {
                     .iter()
                     .filter(|&cmd| *cmd.workspace == id.to_string());
                 if let Some(cmd) = &cmds.next() {
-                    if Workspace::get_active().unwrap().windows == 0 {
+                    let ws = Workspace::get_active().unwrap();
+                    if ws.windows == 0 {
                         Command::new(&cmd.command)
                             .args(cmd.args.clone().as_deref().unwrap_or_default())
                             .spawn()
