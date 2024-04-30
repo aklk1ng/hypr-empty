@@ -23,7 +23,7 @@ use hyprland::{
 
 fn main() -> Result<()> {
     loop {
-        let mut event_listener = EventListener::new();
+        let mut event_listener = EventListener::new()?;
 
         let home_dir = std::env::var("HOME")?;
         let mut config_file = File::open(format!("{home_dir}/.config/hypr-empty/config.toml"))?;
@@ -33,7 +33,7 @@ fn main() -> Result<()> {
 
         let cmds: Cmds = toml::from_str(&config)?;
 
-        event_listener.add_workspace_change_handler(move |id, state| {
+        event_listener.add_workspace_added_handler(move |id, state| {
             if let WorkspaceType::Regular(_ws) = &state.active_workspace {
                 let mut cmds = cmds
                     .components
